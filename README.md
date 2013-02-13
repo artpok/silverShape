@@ -1,4 +1,4 @@
-# [jueGOjs v0.0.1](https://github.com/artpok/jueGOjs.git)
+# [silverShape v0.0.1](https://github.com/artpok/silverShape.git)
 =======
 
 Desarrollo de un juego de plataformas en Html, CSS y Javascript, realizado por [Marcelo Piñeiro]().
