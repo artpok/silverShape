@@ -101,7 +101,7 @@ $('.bot2').bind('vmousedown', function(event){
     event.preventDefault();
 });*/
 $('.bot1').bind('vmousedown', function(event){
-		event.preventDefault(); event.stopPropagation();
+	event.preventDefault(); //event.stopPropagation();
 	//alert('oleole!!');
 	$('.bot1').click();
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
