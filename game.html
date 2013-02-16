@@ -95,6 +95,10 @@ var personaje = new Personaje(PRJ_ADVENTURE.obj, PRJ_ADVENTURE.fondo, arrPlatfor
 $('.bot2').mousedown(function(){
 	$(this).animate({opacity: .3}, 100).animate({opacity: .0}, 100);
 });
+$('.bot1').live('tap',function(event){
+    PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
+    event.preventDefault();
+});
 $('.bot1').mousedown(function(){
 		event.preventDefault(); event.stopPropagation();
 	//alert('oleole!!');
