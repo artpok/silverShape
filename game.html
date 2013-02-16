@@ -84,13 +84,16 @@ $('.bot1').mouseup(function(){
 var pad_Left = $('.pad_ctrl').position().left;
 var pad_Top = $('.pad_ctrl').position().top;
 $('.pad_ctrl').draggable({
+	start: function(e) {
+            e.preventDefault();
+        },
    containment: 'parent',
    //axis: "x" ,
    revert: true,
    revertDuration: 150
 });
 $( ".pad_ctrl" ).on( "drag", function( event, ui ) {
-	event.stopPropagation();
+	//event.stopPropagation();
 	if( ui.position.left > pad_Left+5 || ui.position.left < pad_Left-5 ){
 		$( ".pad_ctrl" ).draggable( "option", "axis", "x" );
 		if( ui.position.left > pad_Left+20 ){
