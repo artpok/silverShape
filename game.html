@@ -97,10 +97,10 @@ var personaje = new Personaje(PRJ_ADVENTURE.obj, PRJ_ADVENTURE.fondo, arrPlatfor
 $('.bot2').mousedown(function(){
 	$(this).animate({opacity: .3}, 100).animate({opacity: .0}, 100);
 });
-$('.bot1').live('tap',function(event){
+/*$('.bot1').live('tap',function(event){
     PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
     event.preventDefault();
-});
+});*/
 $('.bot1').mousedown(function(){
 		event.preventDefault(); event.stopPropagation();
 	//alert('oleole!!');
@@ -518,7 +518,7 @@ left: 79px;
 </style>
 
 </head>
-<body  id="page1" style="background-color:#3e3e3e">
+<body style="background-color:#3e3e3e">
 <div id="lienzo">		
 	<div id="elemsMOVE">
 		<div class="finalIZQ obstacle"></div>
