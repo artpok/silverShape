@@ -1,8 +1,29 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>silverShape</title>
-<meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+<script>
+var timer = 1;
+var loader = 0;
+
+if(navigator.userAgent.indexOf("Android")  >= 0){
+    document.write('<meta name="viewport" content="width=device-width, user-scalable=no, target-densityDpi=191.6"/>');
+    var loader = 2;
+    var timer = 1;
+}
+if(navigator.userAgent.indexOf("iPhone") >= 0){
+    document.write('<meta name="viewport" content="width=device-width, initial-scale=0.70, maximum-scale=0.63, user-scalable=no" />');
+    var loader = 1;
+    var timer = 1;
+}
+if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
+    document.write('<meta name="viewport" content="width=device-width, initial-scale=0.64, maximum-scale=0.64"/>');
+    var loader = 0;
+    var timer = 2;
+}
+//alert(navigator.userAgent);
+</script>   
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jq-ui-touch.js"></script>
