@@ -1,0 +1,511 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>project_ADVENTURE</title>
+<meta charset="utf-8" />
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
+<!-- COLISIONES -->
+<script type="text/javascript" charset="utf-8" src="js/jquery-collision-1.0.1.js"></script>
+<!-- SONIDO -->
+<script type="text/javascript" charset="utf-8" src="js/buzz.js"></script>
+<!-- CLASES -->
+
+<script type="text/javascript" charset="utf-8" src="js/personaje.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="js/platform.js"></script>
+
+<!-- JS -->
+<script type="text/javascript" >
+$(document).ready(function () {
+// VARIBLES
+var PRJ_ADVENTURE = {
+	obj: $('.person'),
+	fondo: $('#lienzo'),
+	TECLAS:{
+		ARRIBA: 38,
+		ABAJO: 40,
+		DERECHA: 39,
+		IZQUIERDA: 37,
+		ESPACIO: 32
+	},
+	TECLAS_PRESIONADAS: Array(),
+	jumpTo: 0,
+	STOP: false,
+	tengoLlaves: false,
+	posLlaves: {
+		0: -3,
+		1: -33,
+		2: -63,
+		3: -33,
+		indice:0
+	},
+	TIMER:0,
+};
+// SONIDOS
+var brilliant = new buzz.sound("sounds/brilliant.mp3");
+brilliant.set("volume", 0.1);
+var run = new buzz.sound("sounds/run4.mp3");
+run.set("volume", 0.1);
+//brilliant.fadeOut(2000);
+// PLATAFORMAS
+var arrAxis = ['.x_axis','.y_axis'];
+var arrPlatforms = [];
+//var Platform = function(name, posX, posY, widZ, movM, arr, ) {
+var plat0 = new Platform('plat0', -1000, 0, 1800, false, arrPlatforms);
+var plat1 = new Platform('plat1', 200, 100, 300, false, arrPlatforms);
+var plat2 = new Platform('plat2', 400, 200, 200, false, arrPlatforms);
+var plat3 = new Platform('plat3', -100, 300, 450, false, arrPlatforms);
+var plat4 = new Platform('plat4', 980, 0, 1300, false, arrPlatforms);
+var plat5 = new Platform('plat5', 1180, 100, 100, false, arrPlatforms);
+var plat6 = new Platform('plat6', 1400, 200, 100, false, arrPlatforms);
+var plat7 = new Platform('plat7', 1200, 300, 50, false, arrPlatforms);
+var plat8 = new Platform('plat8', 640, 400, 500, false, arrPlatforms);
+var plat9 = new Platform('plat9', -500, 300, 50, false, arrPlatforms);
+var plat10 = new Platform('plat10', -450, 200, 120, 200, arrPlatforms);
+
+// PERSONJE
+var personaje = new Personaje(PRJ_ADVENTURE.obj, PRJ_ADVENTURE.fondo, arrPlatforms );
+
+// BUTTONS
+$('.bot2').mousedown(function(){
+	$(this).animate({opacity: .3}, 100).animate({opacity: .0}, 100);
+});
+$('.bot1').mousedown(function(){
+	$(this).animate({opacity: .3}, 100);
+	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
+});
+$('.bot1').mouseup(function(){
+	$(this).animate({opacity: 0}, 100);
+	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=false;
+});
+// PADCONTROL
+var pad_Left = $('.pad_ctrl').position().left;
+var pad_Top = $('.pad_ctrl').position().top;
+$('.pad_ctrl').draggable({
+   containment: 'parent',
+   //axis: "x" ,
+   revert: true,
+   revertDuration: 150
+});
+$( ".pad_ctrl" ).on( "drag", function( event, ui ) {
+	if( ui.position.left > pad_Left+5 || ui.position.left < pad_Left-5 ){
+		$( ".pad_ctrl" ).draggable( "option", "axis", "x" );
+		if( ui.position.left > pad_Left+20 ){
+			PRJ_ADVENTURE.TECLAS_PRESIONADAS[37]=false;
+			PRJ_ADVENTURE.TECLAS_PRESIONADAS[39]=true;
+		}else if( ui.position.left < pad_Left-20 ){
+			PRJ_ADVENTURE.TECLAS_PRESIONADAS[39]=false;
+			PRJ_ADVENTURE.TECLAS_PRESIONADAS[37]=true;
+		}
+		return
+	}
+	
+	if( ui.position.top > pad_Top-5 || ui.position.top < pad_Top+5 ){
+		$( ".pad_ctrl" ).draggable( "option", "axis", "y" );
+		return
+	}
+	
+	if( ui.position.top < pad_Top+5 || ui.position.top > pad_Top-5 || ui.position.left < pad_Left+5 || ui.position.left > pad_Left-5 ){
+		$( ".pad_ctrl" ).draggable( "option", "axis", "false" );
+		return
+	};
+	//
+});
+$( ".pad_ctrl" ).on( "dragstop", function( event, ui ) {
+	PRJ_ADVENTURE.TECLAS_PRESIONADAS[37]=false;
+	PRJ_ADVENTURE.TECLAS_PRESIONADAS[39]=false;
+	personaje.Mover('RELAX');
+	jumpTo = null;
+});
+
+//FUNCION de INICIO
+init();
+function init(){
+ 	setInterval(gameLoop, 1000/40); 
+}
+// GAMELOOP
+function gameLoop(){
+
+	//plat10.Move();
+	//platsMov();
+	sprtLlaves();
+	colisiones();
+	if(!PRJ_ADVENTURE.STOP){
+		
+		personaje.Gravity(arrPlatforms);
+		//Esta presionada la tecla DERECHA??
+		if(PRJ_ADVENTURE.TECLAS_PRESIONADAS[PRJ_ADVENTURE.TECLAS.DERECHA]){
+			personaje.Mover('DER');
+			jumpTo = 'DER';
+			run.play();
+		}
+		//Esta presionada la tecla IZQUIERDA??
+		if(PRJ_ADVENTURE.TECLAS_PRESIONADAS[PRJ_ADVENTURE.TECLAS.IZQUIERDA]){
+			personaje.Mover('IZQ');
+			jumpTo = 'IZQ';
+		}
+		//Esta presionada la tecla ESPACIO??
+		if(PRJ_ADVENTURE.TECLAS_PRESIONADAS[PRJ_ADVENTURE.TECLAS.ESPACIO]){
+			if(!personaje.saltando){
+				personaje.Jump(jumpTo, PRJ_ADVENTURE.obj.position().top);
+				setTimeout(personaje.saltando = false, 500);
+			}			
+		}
+	}else{
+		switch(PRJ_ADVENTURE.STOP){
+			case 'LLAVES':
+				$(PRJ_ADVENTURE.obj).css('background-position', '0px 0px');
+				$(PRJ_ADVENTURE.obj).css('background-position', '0px 0px');			
+				PRJ_ADVENTURE.TECLAS_PRESIONADAS=[];
+				setTimeout(function(){ 	PRJ_ADVENTURE.STOP = null;	}, 1000);
+				break;
+		}
+	}
+}
+// PLATAFORMAS EN MOVIMIENTO
+/*function platsMov(){
+	$('.movM').each(function(index, elem){
+		//console.log(index+' --- '+elem.id);
+		elem_left = $( '#'+elem.id ).css('left');	
+		if(elem_left){
+			$( '#'+elem.id ).animate({ left: '+=100px'}), 500, function(){
+				$( '#'+elem.id ).css({ left: '-=100px'}),500;
+			}
+		//}
+	});
+}*/
+
+// CONTROL DE ESTADO DE LA PULSACIÓN
+$(document).keydown(function(e){ PRJ_ADVENTURE.TECLAS_PRESIONADAS[e.which]=true; });
+$(document).keyup(function(e){
+	if(!PRJ_ADVENTURE.STOP){
+		PRJ_ADVENTURE.TECLAS_PRESIONADAS[e.which]=false;
+		personaje.Mover('RELAX');
+		jumpTo = null;
+	}		
+});
+// SPRITESHEET LLAVES, JAKE
+function sprtLlaves(){
+	pos = PRJ_ADVENTURE.posLlaves[PRJ_ADVENTURE.posLlaves.indice];
+	$('.llaves').css('background-position-x', pos+'px');
+	if( pos == PRJ_ADVENTURE.posLlaves[PRJ_ADVENTURE.posLlaves.length-1] ){ PRJ_ADVENTURE.posLlaves.indice = 0; }else{ PRJ_ADVENTURE.posLlaves.indice++; }
+}
+// CONTROL DE COLISION DE OBJETOS
+function colisiones(){
+	// COJER LLAVES
+	var col_FinnLLaves = $('.person').collision( '.llaves' );
+	if( col_FinnLLaves.length !== 0 ){
+		var actalBottom = $(PRJ_ADVENTURE.obj).css('bottom');
+		actalBottom = actalBottom.replace("px","")*1.05;
+		$('.person div').css('display', 'block');
+		brilliant.play();
+		$(PRJ_ADVENTURE.obj).animate({ bottom : actalBottom+'px' },400, function(){
+			$(PRJ_ADVENTURE.obj).animate({ bottom : actalBottom/1.05+'px' }, 400, function(){
+				$(PRJ_ADVENTURE.obj).css('background-position', '44px');
+				$('.person div').css('display', 'none');
+			});
+		});
+		setTimeout(function(){ 
+			$('.llaves').css('display', 'none');
+			$('.llave').css('display', 'block');
+			$('.jake_msg').remove();
+			PRJ_ADVENTURE.STOP = 'LLAVES';
+			PRJ_ADVENTURE.tengoLLaves = true;
+		}, 100);		
+	}
+	// AL LLEGAR A LA CELDA...
+	var col_Meta = $('.person').collision( '.meta' );
+	if( col_Meta.length !== 0 && PRJ_ADVENTURE.tengoLLaves ){
+		$('.celda').hide(2000);		
+		$('.meta').remove();		
+	}else if( col_Meta.length !== 0 && !PRJ_ADVENTURE.STOP ){
+		$('.jake_msg').show('slow');
+	}
+	// AL LLEGAR A LA META...
+	var col_Jake = $('.person').collision( '.jake' );
+	if( col_Jake.length !== 0 && PRJ_ADVENTURE.tengoLLaves ){
+		$('.level_clear').css('width', '600px');
+		return		
+	}
+	// COLISION CON EL RESTO DE OBJETOS
+	var colisions = $('.person').collision( '.obstacle', { relative: "collider", obstacleData: "odata", colliderData: "cdata", directionData: "ddata", as: "<div/>" } );
+	if( colisions.length !== 0 ){
+		for( var i=0; i<colisions.length; i++ ) { var cside = $(colisions[i]).data("ddata"); }
+		if(cside == 'NW'){ personaje.pared = 'IZQ'; }else{ personaje.pared = 'DER'; }
+	}else { personaje.pared = false; }
+}
+
+}); // FIN DE Jquery
+
+
+
+</script>
+<style>
+#lienzo{
+	width:700px;
+	height:500px;
+	background: #88deff url('images/background1.jpg') repeat-x; 
+	background-position-x: 0px;
+	background-position-y: 285px;
+	margin:100px auto;
+	position:relative;
+	overflow: hidden;
+}
+.person{
+	background-image:url('images/finnNOshadw.png');
+	background-position: 4px -57px;
+	width:40px;
+	height:57px;
+	position:absolute;
+	bottom:600px;
+	left:250px;
+	z-index:100;
+}
+.person div{
+	-webkit-box-shadow: 0px 0px 35px #ffffff, 0px 0px 35px #ffffff, 0px 0px 55px #ffffff, 0px 0px 65px #ffffff, 0px 0px 75px #ffffff;
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	top: 15px;
+	left: 11px;
+	z-index: 0;
+	display:none;
+}
+.jake{
+	background-image: url('images/jakeNOshadw.png');
+	background-position: 56px -170px;
+	width: 30px;
+	height: 36px;
+	position: absolute;
+	bottom: 408px;
+	left: 662px;
+}
+.jake_msg{
+	background-image: url('images/msg_Jake.png');
+	width: 98px;
+	height: 107px;
+	position: absolute;
+	bottom: 412px;
+	left: 674px;
+	display:none;
+}
+.celda{
+	background-image: url('images/celda.png');
+	background-position: 65px -104px;
+	background-size: 120% 95%;
+	width: 62px;
+	height: 57px;
+	position: absolute;
+	bottom: 402px;
+	left: 650px;
+	z-index: 150;
+}
+.meta{
+	width: 2px;
+	height: 57px;
+	position: absolute;
+	bottom: 402px;
+	left: 720px;
+	background-color: none;
+}
+.llaves{
+	background-image: url('images/llaves.png');
+	background-position: -5px 0px;
+	width: 21px;
+	height: 33px;
+	position: absolute;
+	bottom: 305px;
+	left: -487px;
+}
+.llave{
+	background-image: url('images/llaves.png');
+	background-position: -5px 0px;
+	width: 21px;
+	height: 11px;
+	position: absolute;
+	top: 24px;
+	right: 24px;
+	display:none;
+}
+.chivato{
+	background-color:#ffffff;
+	position:absolute;
+	width:30px;
+	height:30px;
+	border-radius:50px;
+	top:20px;
+	left:20px;
+}
+.plataform{
+	position:absolute;
+	height:15px;
+	background-color:none;
+}
+.plataform .plat_left{
+	background: left, no-repeat, none, url('images/plat_IZQ_p.png');
+	position: relative;
+	width: 22px;
+	height: 23px;
+	float: left;
+}
+.plataform .plat_large{
+	background: repeat-x, none, url('images/plat_large.png');
+	position: relative;
+	height: 23px;
+	float: left;
+}
+.plataform .plat_right{
+	background: right, no-repeat, none, url('images/plat_DER_p.png');
+	position: relative;
+	width: 22px;
+	height: 23px;
+	float: right;
+}
+
+.finalIZQ{
+	position:absolute;
+	height:500px;
+	width:500px;
+	left:-1000px;
+	bottom:0px;
+	background-color:green;
+}
+.finalDER{
+	position:absolute;
+	height:500px;
+	width:500px;
+	left:1800px;
+	bottom:0px;
+	background-color:green;
+}
+.level_clear{
+	width: 0px;
+	top: -50px;
+	left: 0;
+	position: absolute;
+	margin:50px 50px;
+}
+#controls_MOVE{
+	left: 0px;
+	bottom: 20px;
+	position: absolute;
+	width: 181px;
+	height: 181px;
+}
+#controls_MOVE .fondo_ctrl{
+	background-image: url('images/fondo_ctrl.png');
+	position: absolute;
+	width: 181px;
+	height: 181px;
+}
+#controls_MOVE .pad_ctrl{
+	background-image: url('images/pad_ctrl.png');
+	position: absolute;
+	width: 75px;
+	height: 75px;
+	background-position: -56px -56px;
+	left: 56px;
+	top: 54px;
+}
+
+.axis .x_axis{
+width: 181px;
+height: 30px;
+background-color: none;
+position: absolute;
+top: 77px;
+left: 0;
+}
+.axis .y_axis{
+width: 30px;
+height: 181px;
+background-color: none;
+position: absolute;
+bottom: 0px;
+left: 79px;
+}
+#controls_BUTTONS{
+	background-image: url('images/fondo_buttons.png');
+	width: 175px;
+	height: 181px;
+	right: 20px;
+	bottom: 20px;
+	position: absolute;
+}
+#controls_BUTTONS .bot1_img{
+	background-image: url('images/button1.png');
+	width: 175px;
+	height: 181px;
+	opacity: 0.7;
+	position: absolute;
+}
+.bot1{
+	cursor: pointer;
+	background-color: #fff;
+	width: 55px;
+	height: 55px;
+	opacity: 0;
+	position: absolute;
+	left: 31px;
+	top: 92px;
+	border-radius: 50px;
+	box-shadow: 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red, 0px 0px 31px red;
+}
+
+#controls_BUTTONS .bot2_img{
+	background-image: url('images/button2.png');
+	width: 175px;
+	height: 181px;
+	opacity: 0.7;
+	position: absolute;
+}
+.bot2{
+	cursor: pointer;
+	background-color: #fff;
+	width: 55px;
+	height: 55px;
+	opacity: 0;
+	position: absolute;
+	right: 34px;
+	bottom: 91px;
+	border-radius: 50px;
+	box-shadow: 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue, 0px 0px 31px blue;
+}
+
+
+</style>
+
+</head>
+<body style="background-color:#3e3e3e">
+<div id="lienzo">		
+	<div id="elemsMOVE">
+		<div class="finalIZQ obstacle"></div>
+		<div class="finalDER obstacle"></div>
+		<div class="jake"></div>
+		<div class="jake_msg"></div>
+		<div class="llaves"></div>
+		<div class="celda obstacle"></div>
+		<div class="meta obstacle"></div>
+	</div>
+	<div class="chivato"></div>
+	<div class="person"><div></div></div>	
+	<div class="llave"></div>
+	<div id="controls_MOVE">
+		<div class="axis snap">
+			<div class="x_axis"></div>
+			<div class="y_axis"></div>
+		</div>
+		<div class="fondo_ctrl"></div>
+		<div class="pad_ctrl"></div>
+	</div>
+	<div id="controls_BUTTONS">
+		<div class="bot2_img"></div>
+		<div class="bot1_img"></div>
+		<div class="bot2"></div>
+		<div class="bot1"></div>		
+	</div>
+	<img class="level_clear" src="images/level_clear.png" />
+</div>
+</body>
+</html>
