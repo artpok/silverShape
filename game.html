@@ -90,6 +90,7 @@ $('.pad_ctrl').draggable({
    revertDuration: 150
 });
 $( ".pad_ctrl" ).on( "drag", function( event, ui ) {
+	event.stopPropagation();
 	if( ui.position.left > pad_Left+5 || ui.position.left < pad_Left-5 ){
 		$( ".pad_ctrl" ).draggable( "option", "axis", "x" );
 		if( ui.position.left > pad_Left+20 ){
