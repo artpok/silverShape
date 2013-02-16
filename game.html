@@ -176,7 +176,7 @@ function gameLoop(){
 	});
 }*/
 
-// CONTROL DE ESTADO DE LA PULSACIÓN
+// CONTROL DE ESTADO DE LA PULSACIï¿½N
 $(document).keydown(function(e){ PRJ_ADVENTURE.TECLAS_PRESIONADAS[e.which]=true; });
 $(document).keyup(function(e){
 	if(!PRJ_ADVENTURE.STOP){
@@ -242,6 +242,11 @@ function colisiones(){
 
 </script>
 <style>
+body{
+	width:700px;
+	height:500px;	
+}
+
 #lienzo{
 	width:700px;
 	height:500px;
