@@ -98,12 +98,13 @@ $('.bot1').mousedown(function(){
 		event.preventDefault(); event.stopPropagation();
 	//alert('oleole!!');
 	$('.bot1').click();
-	$(this).animate({opacity: .3}, 100);
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
+	$(this).animate({opacity: .3}, 100);
+
 });
 $('.bot1').mouseup(function(){
-	$(this).animate({opacity: 0}, 100);
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=false;
+	$(this).animate({opacity: 0}, 100);
 });
 // PADCONTROL
 var pad_Left = $('.pad_ctrl').position().left;
