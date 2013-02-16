@@ -146,6 +146,18 @@ $( ".pad_ctrl" ).on( "drag", function( event, ui ) {
 		return
 	};
 	//
+	$('.bot1').bind('vmousedown', function(event){
+		//event.preventDefault(); //event.stopPropagation();
+		//alert('oleole!!');
+		$('.bot1').click();
+		PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
+		$(this).animate({opacity: .3}, 100);
+	});
+	$('.bot1').bind('vmouseup', function(event){
+		PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=false;
+		$(this).animate({opacity: 0}, 100);
+	});
+	//	
 });
 $( ".pad_ctrl" ).on( "dragstop", function( event, ui ) {
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[37]=false;
