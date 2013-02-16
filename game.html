@@ -93,14 +93,14 @@ var plat10 = new Platform('plat10', -450, 200, 120, 200, arrPlatforms);
 var personaje = new Personaje(PRJ_ADVENTURE.obj, PRJ_ADVENTURE.fondo, arrPlatforms );
 
 // BUTTONS
-$('.bot2').vmousedown(function(){
+$('.bot2').live('vmousedown', function(event){
 	$(this).animate({opacity: .3}, 100).animate({opacity: .0}, 100);
 });
 /*$('.bot1').live('tap',function(event){
     PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
     event.preventDefault();
 });*/
-$('.bot1').vmousedown(function(){
+$('.bot1').live('vmousedown', function(event){
 		event.preventDefault(); event.stopPropagation();
 	//alert('oleole!!');
 	$('.bot1').click();
@@ -108,7 +108,7 @@ $('.bot1').vmousedown(function(){
 	$(this).animate({opacity: .3}, 100);
 
 });
-$('.bot1').vmouseup(function(){
+$('.bot1').live('vmouseup', function(event){
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=false;
 	$(this).animate({opacity: 0}, 100);
 });
