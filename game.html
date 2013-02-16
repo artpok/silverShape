@@ -73,7 +73,7 @@ $('.bot2').mousedown(function(){
 	$(this).animate({opacity: .3}, 100).animate({opacity: .0}, 100);
 });
 $('.bot1').mousedown(function(){
-	$('.bot1').click();
+//	$('.bot1').click();
 	$(this).animate({opacity: .3}, 100);
 	PRJ_ADVENTURE.TECLAS_PRESIONADAS[32]=true;
 });
@@ -85,9 +85,7 @@ $('.bot1').mouseup(function(){
 var pad_Left = $('.pad_ctrl').position().left;
 var pad_Top = $('.pad_ctrl').position().top;
 $('.pad_ctrl').draggable({
-	start: function(e) {
-            e.preventDefault();
-        },
+
    containment: 'parent',
    //axis: "x" ,
    revert: true,
