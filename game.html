@@ -45,25 +45,7 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 $(document).ready(function () {
 //$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});
 
-GameController.init( { 
-    left: {
-        type: 'joystick'
-    }, 
-    right: { 
-        position: { 
-            right: '5%' 
-        }, 
-        type: 'buttons', 
-        buttons: [
-        { 
-            label: 'jump', fontSize: 13, touchStart: function() { 
-                // do something 
-            } 
-        }, 
-        false, false, false
-        ] 
-    }
-} );
+GameController.init( {);
 // VARIBLES
 var jumpTo = null;
 var PRJ_ADVENTURE = {
