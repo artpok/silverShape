@@ -237,8 +237,8 @@
 			var ele;
 			if( !this.options.canvas || !( ele = document.getElementById( this.options.canvas ) ) )
 			{
-			//	this.options.canvas = document.getElementsByTagName( 'canvas' )[0];
-				this.options.canvas = document.getElementById( 'lienzo' )[0];
+				this.options.canvas = document.getElementsByTagName( 'canvas' )[0];
+			
 			}
 			else if( ele )
 			{
