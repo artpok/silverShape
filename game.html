@@ -44,7 +44,8 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 <script type="text/javascript" >
 $(document).ready(function () {
 //$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});
-
+var canvas = document.getElementById('mycanvas');
+var context = canvas.getContext('2d');
 GameController.init();
 // VARIBLES
 var jumpTo = null;
@@ -563,5 +564,6 @@ left: 79px;
 	</div>
 	<img class="level_clear" src="images/level_clear.png" />
 </div>
+<canvas id="mycanvas" style="height:500px; width:500px;"></canvas>
 </body>
 </html>
