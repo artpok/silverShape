@@ -44,4 +44,4 @@ Mediante la clase Personaje creamos un nuevo personaje principal....SEGUIREMOS..
 CONTROLES:
 ------------
 
-20/02/2013  - Añado esta fantastica libreria [html5-virtual-game-controller](https://github.com/austinhallock/html5-virtual-game-controller)de[austinhallock](https://github.com/austinhallock) que en teoria hará que el uego funcione en dispositivos táctiles. Vamos a probar!!! 
+20/02/2013  - Añado esta fantastica libreria [html5-virtual-game-controller](https://github.com/austinhallock/html5-virtual-game-controller)de[austinhallock](https://github.com/austinhallock) que en teoria solucionará el problema que tengo para que el juego funcione en dispositivos táctiles. Vamos a probar!!! 
