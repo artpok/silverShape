@@ -18,15 +18,32 @@
 <!-- LIBRERIA DE CONTROLES TÁCTILES -->
 
 <script type='text/javascript' src='js/gamecontroller.js'></script>
-<script type='text/javascript'>
-    $( function() { // jQuery *not* required - just be to call onload
-        GameController.init();
-    } );
-</script>
+
 
 <!-- JS -->
 <script type="text/javascript" >
 $(document).ready(function () {
+	
+GameController.init( { 
+    left: {
+        type: 'joystick'
+    }, 
+    right: { 
+        position: { 
+            right: '5%' 
+        }, 
+        type: 'buttons', 
+        buttons: [
+        { 
+            label: 'jump', fontSize: 13, touchStart: function() { 
+                // do something 
+            } 
+        }, 
+        false, false, false
+        ] 
+    }
+} );
+	
 // VARIBLES
 var PRJ_ADVENTURE = {
 	obj: $('.person'),
