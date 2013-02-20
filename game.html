@@ -15,6 +15,15 @@
 
 <script type="text/javascript" charset="utf-8" src="js/platform.js"></script>
 
+<!-- LIBRERIA DE CONTROLES TÃCTILES -->
+
+<script type='text/javascript' src='/path/to/gamecontroller.js'></script>
+<script type='text/javascript'>
+    $( function() { // jQuery *not* required - just be to call onload
+        GameController.init();
+    } );
+</script>
+
 <!-- JS -->
 <script type="text/javascript" >
 $(document).ready(function () {
@@ -169,7 +178,7 @@ function gameLoop(){
 	});
 }*/
 
-// CONTROL DE ESTADO DE LA PULSACIÓN
+// CONTROL DE ESTADO DE LA PULSACIï¿½N
 $(document).keydown(function(e){ PRJ_ADVENTURE.TECLAS_PRESIONADAS[e.which]=true; });
 $(document).keyup(function(e){
 	if(!PRJ_ADVENTURE.STOP){
