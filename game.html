@@ -26,8 +26,10 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 </script>   
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/jq-ui-touch.js"></script>
+<!-- <script src="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script> -->
+<!-- <script type="text/javascript" charset="utf-8" src="js/jq-ui-touch.js"></script> -->
+<!-- LIBRERIA DE CONTROLES TÁCTILES -->
+<script type='text/javascript' src='js/gamecontroller.js'></script>
 <!-- COLISIONES -->
 <script type="text/javascript" charset="utf-8" src="js/jquery-collision-1.0.1.js"></script>
 <!-- SONIDO -->
@@ -41,7 +43,27 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 <!-- JS -->
 <script type="text/javascript" >
 $(document).ready(function () {
-$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});
+//$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});
+
+GameController.init( { 
+    left: {
+        type: 'joystick'
+    }, 
+    right: { 
+        position: { 
+            right: '5%' 
+        }, 
+        type: 'buttons', 
+        buttons: [
+        { 
+            label: 'jump', fontSize: 13, touchStart: function() { 
+                // do something 
+            } 
+        }, 
+        false, false, false
+        ] 
+    }
+} );
 // VARIBLES
 var jumpTo = null;
 var PRJ_ADVENTURE = {
