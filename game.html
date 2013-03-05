@@ -25,7 +25,7 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 //alert(navigator.userAgent);
 </script>   
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.9.1.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script> -->
 <script src="http://code.jquery.com/mobile/1.3.0-rc.1/jquery.mobile-1.3.0-rc.1.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jq-ui-touch.js"></script>
 <!-- LIBRERIA DE CONTROLES TÁCTILES 
@@ -292,10 +292,7 @@ function colisiones(){
 
 </script>
 <style>
-body{
-	width:100%;
-	height:500px;	
-}
+
 
 #lienzo{
 	width:800px;
@@ -306,6 +303,12 @@ body{
 	margin:100px auto;
 	position:relative;
 	overflow: hidden;
+}
+.message{
+	width:800px;
+	height:50px;
+	margin:100px auto;	
+	position:relative;
 }
 .person{
 	background-image:url('images/finnNOshadw.png');
@@ -561,6 +564,6 @@ left: 79px;
 	</div>
 	<img class="level_clear" src="images/level_clear.png" />
 </div>
-<div style="color:#fff">Utiliza las flechas para moverte a izquierda o derecha y la barra espaciadora para saltar.</div>
+<div class="message" style="color:#fff">Utiliza las flechas para moverte a izquierda o derecha y la barra espaciadora para saltar.<br> Utiliza el touchpad en plataformas táctiles.</div>
 </body>
 </html>
