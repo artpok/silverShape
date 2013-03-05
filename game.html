@@ -44,7 +44,7 @@ if(navigator.userAgent.indexOf("BlackBerry")  >= 0){
 <script type="text/javascript" >
 $(document).ready(function () {
 //$(document).bind("mobileinit", function(){$.extend(  $.mobile , {autoInitializePage: false})});
-GameController.init();
+//GameController.init();
 // VARIBLES
 var jumpTo = null;
 var PRJ_ADVENTURE = {
@@ -568,9 +568,7 @@ canvas{
 	</div>
 	<img class="level_clear" src="images/level_clear.png" />
 </div>
-<div>
-	Utiliza las flechas <-, -> para moverte a izquierda o derecha y la barra espaciadora para saltar.
-</div>
+<span style="color:#fff">Utiliza las flechas para moverte a izquierda o derecha y la barra espaciadora para saltar.</span>
 <canvas></canvas>
 </body>
 </html>
