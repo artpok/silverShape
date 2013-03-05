@@ -51,7 +51,7 @@ var Personaje = function(obj, fondo, plataformas) {
 		if( $(obj).position().top >= pos-110 && ctrlPos == true && inPlatform == true ){
 			ctrlPos = false;
 			this.saltando = true;
-			$(obj).animate({'bottom': '+=120px'},350, function(){
+			$(obj).animate({'bottom': '+=140px'},350, function(){
 				runSprite('RELAX');
 				inPlatform = false;
 				setTimeout(function(){ permisos() }, 100);
